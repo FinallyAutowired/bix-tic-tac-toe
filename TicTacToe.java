@@ -17,7 +17,7 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        while (!hasWinner) {
+        while (!hasWinner && all.size() < 9) {
             int input = scanner.nextInt();
             if (all.contains(input)) {
                 System.err.printf("%s has already been played.%n", input);
@@ -35,28 +35,25 @@ public class TicTacToe {
             }
             System.out.printf("%s plays at %s.%n", playing, input);
         }
-        System.out.printf("%s wins!%n", playing);
+        if (hasWinner) {
+            System.out.printf("%s wins!%n", playing);
+        } else {
+            System.out.println("Draw.");
+        }
     }
 
     private static boolean win(List<Integer> steps) {
-        int score;
-        if (steps.size() == 3) {
-            score = steps.stream().reduce(Integer::sum).get();
-            return score % 3 == 0;
-        }
-        if (steps.size() == 4) {
-            score = steps.stream().reduce(Integer::sum).get();
-            int tmp;
-            for (int i = 0; i < 3; i++) {
-                tmp = score - steps.get(i);
-                if (tmp % 3 == 0) {
-                    return true;
-                }
-            }
-        }
-        if (steps.size() == 5) {
-            return true;
-        }
-        return false;
+        return hasWinningSteps(steps);
+    }
+
+    private static boolean hasWinningSteps(List<Integer> steps) {
+        return (steps.contains(1) && steps.contains(2) && steps.contains(3))
+                || (steps.contains(4) && steps.contains(5) && steps.contains(6))
+                || (steps.contains(7) && steps.contains(8) && steps.contains(9))
+                || (steps.contains(1) && steps.contains(4) && steps.contains(7))
+                || (steps.contains(2) && steps.contains(5) && steps.contains(8))
+                || (steps.contains(3) && steps.contains(6) && steps.contains(9))
+                || (steps.contains(1) && steps.contains(5) && steps.contains(9))
+                || (steps.contains(3) && steps.contains(5) && steps.contains(7));
     }
 }
